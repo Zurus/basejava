@@ -10,4 +10,9 @@ public class Resume {
     public String toString() {
         return uuid;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return uuid.equals(((Resume)obj).uuid);
+    }
 }

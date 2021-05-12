@@ -13,6 +13,7 @@ public class MainTestArrayStorage {
         r3.uuid = "uuid3";
 
         ARRAY_STORAGE.save(r1);
+        ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
 
