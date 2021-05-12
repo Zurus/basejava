@@ -16,40 +16,33 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                size++;
-                System.out.println(String.format("Резюме %s сохранено!", r.uuid));
-                return;
-            } else if(storage[i].equals(r)) {
-                System.out.println(String.format("Резюме %s уже есть в массиве!", r.uuid));
-                return;
-            }
+        if (size == storage.length) {
+            System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.uuid));
+            return;
         }
-        System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.uuid));
+        //Проверим, есть ли элемент в массиве!
+        int idx = getIdx(r.uuid);
+        if (idx == NOT_FOUNT_IDX) {
+            storage[size] = r;
+            size++;
+            System.out.println(String.format("Резюме %s сохранено!", r.uuid));
+        } else {
+            System.out.println(String.format("Резюме %s уже есть в массиве!", r.uuid));
+        }
     }
 
     //Получаем индекс нужного элемента
     private int getIdx(String uuid) {
-        //Ничего не найдено, результат -1
-        int result = NOT_FOUNT_IDX;
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)){
-                result = i;
-                break;
+                return i;
             }
         }
-        return result;
+        //Нужный элемент не найден!
+        return NOT_FOUNT_IDX;
     }
 
-    //
-    private void recombineArray(int idx) {
-        do {
-            storage[idx] = storage[idx+1];
-            idx++;
-        } while (storage[idx] != null);
-    }
+
 
     Resume get(String uuid) {
         int idx = getIdx(uuid);
@@ -68,11 +61,18 @@ public class ArrayStorage {
         }
     }
 
+    private void recombineArray(int idx) {
+        do {
+            storage[idx] = storage[idx+1];
+            idx++;
+        } while (storage[idx] != null);
+    }
+
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOfRange(storage,0, size);
+        return Arrays.copyOf(storage, size);
     }
 
     int size() {
