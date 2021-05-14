@@ -20,7 +20,10 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int idx = getIdx(r.getUuid());
+        update(r, getIdx(r.getUuid()));
+    }
+
+    private void update(Resume r, int idx) {
         if (idx != NOT_FOUNT_IDX) {
             storage[idx] = r;
             System.out.println(String.format("Резюме %s обновлено!", r));
@@ -35,12 +38,16 @@ public class ArrayStorage {
         //Проверим, есть ли элемент в массиве!
         int idx = getIdx(r.getUuid());
         if (idx == NOT_FOUNT_IDX) {
-            storage[size] = r;
-            size++;
+            storage[size++] = r;
             System.out.println(String.format("Резюме %s сохранено!", r.getUuid()));
         } else {
-            System.out.println(String.format("Резюме %s уже есть в массиве!", r.getUuid()));
+            update(r, idx);
+            System.out.println(String.format("Резюме %s обновлено!", r.getUuid()));
         }
+    }
+
+    private int getIdx(Resume r) {
+        return getIdx(r.getUuid());
     }
 
     //Получаем индекс нужного элемента
