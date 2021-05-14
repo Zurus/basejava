@@ -9,7 +9,7 @@ public class ArrayStorage {
     private int size = 0;
 
     void clear() {
-        for (int i = 0; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
@@ -34,15 +34,12 @@ public class ArrayStorage {
     //Получаем индекс нужного элемента
     private int getIdx(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)){
+            if (storage[i].uuid.equals(uuid)) {
                 return i;
             }
         }
-        //Нужный элемент не найден!
         return NOT_FOUNT_IDX;
     }
-
-
 
     Resume get(String uuid) {
         int idx = getIdx(uuid);
@@ -63,7 +60,7 @@ public class ArrayStorage {
 
     private void recombineArray(int idx) {
         do {
-            storage[idx] = storage[idx+1];
+            storage[idx] = storage[idx + 1];
             idx++;
         } while (storage[idx] != null);
     }
