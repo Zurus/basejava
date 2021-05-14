@@ -19,6 +19,14 @@ public class ArrayStorage {
         size = 0;
     }
 
+    public void update(Resume r) {
+        int idx = getIdx(r.getUuid());
+        if (idx != NOT_FOUNT_IDX) {
+            storage[idx] = r;
+            System.out.println(String.format("Резюме %s обновлено!", r));
+        }
+    }
+
     public void save(Resume r) {
         if (size == storage.length) {
             System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.getUuid()));
@@ -42,7 +50,7 @@ public class ArrayStorage {
                 return i;
             }
         }
-        System.out.println(String.format("Резюме %s не найдено!",uuid));
+        System.out.println(String.format("Резюме %s не найдено!", uuid));
         return NOT_FOUNT_IDX;
     }
 
