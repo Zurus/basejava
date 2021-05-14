@@ -1,47 +1,52 @@
+package com.urise.webapp.storage;
+
 import java.util.Arrays;
+
+import com.urise.webapp.model.Resume;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10000];
     private static final int NOT_FOUNT_IDX = -1;
     private int size = 0;
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         if (size == storage.length) {
-            System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.uuid));
+            System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.getUuid()));
             return;
         }
         //Проверим, есть ли элемент в массиве!
-        int idx = getIdx(r.uuid);
+        int idx = getIdx(r.getUuid());
         if (idx == NOT_FOUNT_IDX) {
             storage[size] = r;
             size++;
-            System.out.println(String.format("Резюме %s сохранено!", r.uuid));
+            System.out.println(String.format("Резюме %s сохранено!", r.getUuid()));
         } else {
-            System.out.println(String.format("Резюме %s уже есть в массиве!", r.uuid));
+            System.out.println(String.format("Резюме %s уже есть в массиве!", r.getUuid()));
         }
     }
 
     //Получаем индекс нужного элемента
     private int getIdx(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
+        System.out.println(String.format("Резюме %s не найдено!",uuid));
         return NOT_FOUNT_IDX;
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int idx = getIdx(uuid);
         if (idx != NOT_FOUNT_IDX) {
             return storage[idx];
@@ -49,30 +54,31 @@ public class ArrayStorage {
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int idx = getIdx(uuid);
         if (idx != NOT_FOUNT_IDX) {
-            storage[idx] = null;
-            recombineArray(idx);
+            storage[idx] = storage[size - 1];
+            storage[size - 1] = null;
+            //recombineArray(idx);
             size--;
         }
     }
 
-    private void recombineArray(int idx) {
-        do {
-            storage[idx] = storage[idx + 1];
-            idx++;
-        } while (storage[idx] != null);
-    }
+//    private void recombineArray(int idx) {
+//        do {
+//            storage[idx] = storage[idx + 1];
+//            idx++;
+//        } while (storage[idx] != null);
+//    }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 }
