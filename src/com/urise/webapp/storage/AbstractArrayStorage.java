@@ -13,18 +13,6 @@ public abstract class AbstractArrayStorage implements Storage {
     protected static final int NOT_FOUNT_IDX = -1;
     protected int size = 0;
 
-    protected void update(Resume r, int idx) {
-        if (idx != NOT_FOUNT_IDX) {
-            storage[idx] = r;
-            System.out.println(String.format("Резюме %s обновлено!", r));
-        }
-    }
-
-    protected int getIdx(Resume r) {
-        return getIdx(r.getUuid());
-    }
-
-
     @Override
     public Resume get(String uuid) {
         int idx = getIdx(uuid);
@@ -34,21 +22,39 @@ public abstract class AbstractArrayStorage implements Storage {
         return null;
     }
 
-
-//    private void recombineArray(int idx) {
-//        do {
-//            storage[idx] = storage[idx + 1];
-//            idx++;
-//        } while (storage[idx] != null);
-//    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
+    @Override
+    public void clear() {
+        Arrays.fill(storage,0,size,null);
+        size = 0;
+    }
 
     @Override
     public int size() {
         return size;
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    @Override
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
+    }
+
+    @Override
+    public void update(Resume r) {
+        update(r, getIdx(r.getUuid()));
+    }
+
+    protected int getIdx(Resume r) {
+        return getIdx(r.getUuid());
+    }
+
+    protected void update(Resume r, int idx) {
+        if (idx != NOT_FOUNT_IDX) {
+            storage[idx] = r;
+            System.out.println(String.format("Резюме %s обновлено!", r));
+        }
     }
 
     //Получаем индекс нужного элемента

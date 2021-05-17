@@ -10,17 +10,6 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void clear() {
-        Arrays.fill(storage,0,size,null);
-        size = 0;
-    }
-
-    @Override
-    public void update(Resume r) {
-        update(r, getIdx(r.getUuid()));
-    }
-
-    @Override
     public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.getUuid()));
@@ -47,17 +36,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-
     protected int getIdx(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
@@ -67,6 +46,4 @@ public class ArrayStorage extends AbstractArrayStorage {
         System.out.println(String.format("Резюме %s не найдено!", uuid));
         return NOT_FOUNT_IDX;
     }
-
-
 }
