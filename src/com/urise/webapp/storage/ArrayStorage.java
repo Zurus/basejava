@@ -33,7 +33,7 @@ public class ArrayStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        if (size == storage.length) {
+        if (size == STORAGE_LIMIT) {
             System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.getUuid()));
             return;
         }
