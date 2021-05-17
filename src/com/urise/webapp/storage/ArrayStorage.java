@@ -7,18 +7,19 @@ import com.urise.webapp.model.Resume;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage implements Storage {
+    private static final int STORAGE_LIMIT = 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private static final int NOT_FOUNT_IDX = -1;
     private int size = 0;
 
+    @Override
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage,0,size,null);
         size = 0;
     }
 
+    @Override
     public void update(Resume r) {
         update(r, getIdx(r.getUuid()));
     }
@@ -30,6 +31,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public void save(Resume r) {
         if (size == storage.length) {
             System.out.println(String.format("Резюме %s не записано, массив переполнен!", r.getUuid()));
@@ -61,6 +63,7 @@ public class ArrayStorage {
         return NOT_FOUNT_IDX;
     }
 
+    @Override
     public Resume get(String uuid) {
         int idx = getIdx(uuid);
         if (idx != NOT_FOUNT_IDX) {
@@ -69,6 +72,7 @@ public class ArrayStorage {
         return null;
     }
 
+    @Override
     public void delete(String uuid) {
         int idx = getIdx(uuid);
         if (idx != NOT_FOUNT_IDX) {
@@ -89,10 +93,12 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
+    @Override
     public int size() {
         return size;
     }

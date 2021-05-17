@@ -13,11 +13,6 @@ public class Resume {
         return uuid;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return uuid.equals(((Resume)obj).uuid);
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -25,4 +20,20 @@ public class Resume {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Resume resume = (Resume) o;
+
+        return uuid.equals(resume.uuid);
+    }
+
 }
