@@ -7,8 +7,7 @@ import org.junit.Ignore;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 
-    @BeforeClass
-    public static void classInit() {
-        storage = new SortedArrayStorage();
+    public SortedArrayStorageTest() {
+        super(new SortedArrayStorage());
     }
 }
