@@ -10,7 +10,7 @@ import com.urise.webapp.model.Resume;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage  extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -30,13 +30,8 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void update(Resume r) {
-        int index = getIdx(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            storage[index] = r;
-        }
+    public void doUpdate(Resume r, Object index) {
+        storage[(Integer) index] = r;
     }
 
     /**
@@ -48,38 +43,30 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void save(Resume r) {
-        int index = getIdx(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (size == STORAGE_LIMIT) {
+    public void doSave(Resume r, Object index) {
+         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            insertElement(r, index);
+            insertElement(r,(Integer)index);
             size++;
         }
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = getIdx(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            fillDeletedElement(index);
-            storage[size - 1] = null;
-            size--;
-        }
+    public void doDelete(Object index) {
+        fillDeletedElement((Integer)index);
+        storage[size - 1] = null;
+        size--;
     }
 
+    @Override
+    public Resume doGet(Object index) {
+        return storage[(Integer) index];
+    }
 
     @Override
-    public Resume get(String uuid) {
-        int idx = getIdx(uuid);
-        if (idx != NOT_FOUNT_IDX) {
-            return storage[idx];
-        }
-        throw new NotExistStorageException(uuid);
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);
@@ -87,5 +74,5 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract void insertElement(Resume r, int index);
 
     //Получаем индекс нужного элемента
-    protected abstract int getIdx(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }
