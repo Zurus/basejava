@@ -1,4 +1,4 @@
-package com.urise.webapp.storage;
+package com.urise.webapp.storage.array;
 
 import java.util.Arrays;
 

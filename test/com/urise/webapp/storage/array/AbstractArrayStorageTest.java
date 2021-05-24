@@ -1,4 +1,4 @@
-package com.urise.webapp.storage;
+package com.urise.webapp.storage.array;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,9 +9,10 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.Storage;
+import com.urise.webapp.storage.array.AbstractArrayStorage;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest {

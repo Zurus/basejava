@@ -1,4 +1,4 @@
-package com.urise.webapp.storage;
+package com.urise.webapp.storage.array;
 
 import java.util.Arrays;
 
@@ -6,11 +6,12 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.AbstractStorage;
 
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -86,6 +87,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void insertElement(Resume r, int index);
 
-    //Получаем индекс нужного элемента
-    protected abstract int getIdx(String uuid);
+
 }

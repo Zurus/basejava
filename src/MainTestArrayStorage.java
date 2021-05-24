@@ -1,12 +1,9 @@
-import java.util.UUID;
-
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
-import com.urise.webapp.storage.SortedArrayStorage;
+import com.urise.webapp.storage.array.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
 
 /**
- * Test for your com.urise.webapp.storage.ArrayStorage implementation
+ * Test for your com.urise.webapp.storage.array.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     //private static final Storage ARRAY_STORAGE = new ArrayStorage();
