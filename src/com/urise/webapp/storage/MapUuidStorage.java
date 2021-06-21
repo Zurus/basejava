@@ -1,6 +1,8 @@
 package com.urise.webapp.storage;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.urise.webapp.model.Resume;
@@ -49,8 +51,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    protected List<Resume> doCopyAll() {
+        return Collections.emptyList();
     }
 
     @Override
