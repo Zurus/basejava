@@ -9,13 +9,19 @@ public class Resume {
 
     // Unique identifier
     private final String uuid;
+    private String fullName;
+
+    public Resume(String uuid, String fullName) {
+        this.uuid = uuid;
+        this.fullName = fullName;
+    }
 
     public Resume(String uuid) {
-        this.uuid = uuid;
+        this(uuid,"John Doe");
     }
 
     public Resume() {
-        this(UUID.randomUUID().toString());
+        this(UUID.randomUUID().toString(), "John Doe");
     }
 
     @Override
@@ -36,9 +42,15 @@ public class Resume {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
         return uuid.equals(resume.uuid);
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

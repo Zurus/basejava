@@ -1,9 +1,10 @@
 package com.urise.webapp.storage;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.urise.webapp.model.Resume;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MapUuidStorage.
@@ -48,9 +49,15 @@ public class MapUuidStorage extends AbstractStorage {
 
     }
 
+//    @Override
+//    public Resume[] getAll() {
+//        return new Resume[0];
+//    }
+
+
     @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    public List<Resume> getAllSorted() {
+        return (List)map.values();
     }
 
     @Override

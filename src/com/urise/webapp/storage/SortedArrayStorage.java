@@ -1,16 +1,22 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 import java.util.Comparator;
-
-import com.urise.webapp.model.Resume;
 
 /**
  * Array based storage for Resumes
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) -> {
+        int resultComparing = o1.getUuid().compareTo(o2.getUuid());
+        if (resultComparing == 0) {
+            resultComparing = o1.getFullName().compareTo(o2.getFullName());
+        }
+        return resultComparing;
+    });
 
     @Override
     protected void fillDeletedElement(int index) {
