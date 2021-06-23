@@ -1,20 +1,20 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.model.Resume;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.urise.webapp.model.Resume;
 
 /**
  * ListStorage.
  *
  * @author ADivaev
  */
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> list = new ArrayList<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -24,28 +24,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        list.set((Integer)searchKey, r);
+    protected void doUpdate(Resume r, Integer searchKey) {
+        list.set(searchKey, r);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey != null;
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Integer searchKey) {
         list.add(r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return list.get((Integer) searchKey);
+    protected Resume doGet(Integer searchKey) {
+        return list.get(searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        int idx = ((Integer) searchKey).intValue();
+    protected void doDelete(Integer searchKey) {
+        int idx = (searchKey).intValue();
         list.remove(idx);
     }
 

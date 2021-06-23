@@ -1,23 +1,19 @@
 package com.urise.webapp.storage;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage  extends AbstractStorage {
-
+public abstract class AbstractArrayStorage  extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected static final int NOT_FOUNT_IDX = -1;
     protected int size = 0;
-
 
     @Override
     public int size() {
@@ -31,8 +27,8 @@ public abstract class AbstractArrayStorage  extends AbstractStorage {
     }
 
     @Override
-    public void doUpdate(Resume r, Object index) {
-        storage[(Integer) index] = r;
+    public void doUpdate(Resume r, Integer index) {
+        storage[index] = r;
     }
 
     /**
@@ -44,30 +40,30 @@ public abstract class AbstractArrayStorage  extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r, Object index) {
+    public void doSave(Resume r, Integer index) {
          if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            insertElement(r,(Integer)index);
+            insertElement(r,index);
             size++;
         }
     }
 
     @Override
-    public void doDelete(Object index) {
-        fillDeletedElement((Integer)index);
+    public void doDelete(Integer index) {
+        fillDeletedElement(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    public Resume doGet(Object index) {
-        return storage[(Integer) index];
+    public Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);
