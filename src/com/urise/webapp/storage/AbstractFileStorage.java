@@ -5,8 +5,10 @@ import com.urise.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File>{
     private File directory;
@@ -49,28 +51,38 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
 
     protected abstract void doWrite(Resume r, File file) throws IOException;
 
+    protected abstract Resume doRead(File file) throws IOException;
+
     @Override
     protected Resume doGet(File searchKey) {
-        return null;
+        try {
+        if (!searchKey.exists()) {
+            throw new StorageException("File not found Exception!", searchKey.getName());
+        }
+            return doRead(searchKey);
+        } catch (IOException e) {
+            throw new StorageException("IOException!", searchKey.getName(), e);
+        }
     }
 
     @Override
     protected void doDelete(File searchKey) {
-
+        searchKey.delete();
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        File[] files = directory.listFiles();
+        return Arrays.stream(files).map(f -> doGet(f)).collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-
+        Arrays.stream(directory.listFiles()).forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        return 0;
+        return directory.listFiles().length;
     }
 }
