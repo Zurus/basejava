@@ -4,14 +4,18 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File>{
     private File directory;
+
+    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
+
+    protected abstract Resume doRead(InputStream is) throws IOException;
+
 
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory,"directory must not be null!");
@@ -32,7 +36,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     @Override
     protected void doUpdate(Resume r, File searchKey) {
         try {
-            doWrite(r, searchKey);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -47,20 +51,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     protected void doSave(Resume r, File searchKey) {
         try {
             searchKey.createNewFile();
-            doWrite(r, searchKey);
         } catch (IOException e) {
             throw new StorageException("IO error", searchKey.getName(), e);
         }
+        doUpdate(r, searchKey);
     }
 
-    protected abstract void doWrite(Resume r, File file) throws IOException;
-
-    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected Resume doGet(File searchKey) {
         try {
-            return doRead(searchKey);
+            return doRead(new BufferedInputStream(new FileInputStream(searchKey)));
         } catch (Exception e) {
             throw new StorageException("File read error", searchKey.getName(), e);
         }
