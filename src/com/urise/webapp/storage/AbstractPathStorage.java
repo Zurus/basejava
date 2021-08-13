@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public abstract class AbstractPathStorage extends AbstractIOStorage<Path> {
     private Path directory;
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
@@ -41,7 +41,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     public int size() {
         String[] list = null;
         try {
-            list = (String[]) Files.list(directory).map(Path::toAbsolutePath).collect(Collectors.toList()).toArray();
+            list = (String[]) Files.list(directory).map(Path::toString).collect(Collectors.toList()).toArray(new String[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,7 +54,12 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Path getSearchKey(String uuid) {
         //return new Path(directory, uuid);
-        return Paths.get(uuid);
+        return Paths.get(directory.toAbsolutePath().toString()+"\\"+uuid);
+//        if (Files.exists(Paths.get(directory+"\\"+uuid))){
+//            return Paths.get(uuid);
+//        } else {
+//            throw new StorageException("Path write error", uuid);
+//        }
     }
 
     @Override
@@ -103,7 +108,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected List<Resume> doCopyAll() {
         Path[] paths = new Path[0];
         try {
-            paths = (Path[]) Files.list(directory).collect(Collectors.toList()).toArray();
+            paths = Files.list(directory).collect(Collectors.toList()).toArray(new Path[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }

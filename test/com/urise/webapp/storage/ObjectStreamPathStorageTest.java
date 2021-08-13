@@ -1,7 +1,7 @@
 package com.urise.webapp.storage;
 
-import static org.junit.Assert.*;
-
-public class ObjectStreamPathStorageTest {
-
+public class ObjectStreamPathStorageTest extends AbstractStorageTest {
+    public ObjectStreamPathStorageTest() {
+        super(new ObjectStreamPathStorage(PATH_NAME));
+    }
 }
