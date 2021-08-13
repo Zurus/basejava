@@ -1,29 +1,28 @@
-package com.urise.webapp.storage;
+/*
+ * @author DivaevAM
+ * @since 13.08.2021
+ */
+
+package com.urise.webapp.storage.serializer;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.io.*;
-import java.util.List;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-    protected ObjectStreamStorage(File directory) {
-        super(directory);
-    }
+public class ObjectSerializer implements StreamSerializer {
 
     @Override
-    protected void doWrite(Resume r, OutputStream file) throws IOException {
+    public void doWrite(Resume r, OutputStream file) throws IOException {
         try(ObjectOutputStream oos = new ObjectOutputStream(file)) {
             oos.writeObject(r);
         }
     }
 
     @Override
-    protected Resume doRead(InputStream is) throws IOException {
-
+    public Resume doRead(InputStream is) throws IOException {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
-
         }catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);
         }
