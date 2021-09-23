@@ -28,6 +28,10 @@ public class OrganizationSection extends Section {
         return organizations.equals(that.organizations);
     }
 
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(organizations);
