@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.Configurator;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.*;
@@ -16,9 +17,9 @@ import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
 
-    protected static final String PATHNAME = "D:\\projects";
+    //protected static final String PATHNAME = "D:\\projects";
     //protected static final String PATHNAME_REL = ".\\";
-    protected static final File STORAGE_DIR = new File(PATHNAME);
+    protected static final File STORAGE_DIR = Configurator.get().getStorageDir();
 
     protected Storage storage;
 
@@ -33,10 +34,10 @@ public abstract class AbstractStorageTest {
     private static final Resume R4;
 
     static {
-        R1 = new Resume(UUID_1,"Name1");
-        R2 = new Resume(UUID_2,"Name2");
-        R3 = new Resume(UUID_3,"Name3");
-        R4 = new Resume(UUID_4,"Name4");
+        R1 = new Resume(UUID_1, "Name1");
+        R2 = new Resume(UUID_2, "Name2");
+        R3 = new Resume(UUID_3, "Name3");
+        R4 = new Resume(UUID_4, "Name4");
 
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
@@ -89,7 +90,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID_1,"New Name");
+        Resume newResume = new Resume(UUID_1, "New Name");
         storage.update(newResume);
         Resume o = storage.get(UUID_1);
         assertTrue(newResume.equals(o));
@@ -98,7 +99,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
-        assertEquals(3,list.size());
+        assertEquals(3, list.size());
         assertEquals(list, Arrays.asList(R1, R2, R3));
     }
 
