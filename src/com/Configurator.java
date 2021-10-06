@@ -29,4 +29,8 @@ public class Configurator {
     public File getStorageDir() {
         return storageDir;
     }
+
+    public String getProperty(String propertyName) {
+        return properties.getProperty(propertyName);
+    }
 }
