@@ -1,16 +1,15 @@
 package com.urise.webapp.util;
 
 import com.Configurator;
-import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.StorageException;
-import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.ConnectionFactory;
+import com.urise.webapp.sql.SqlExecutorVoid;
 import com.urise.webapp.storage.SqlStorage;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlHelper {
@@ -18,7 +17,6 @@ public class SqlHelper {
     private static final String URL_PROPERTIES = "db.url";
     private static final String USER_PROPERTIES = "db.user";
     private static final String PASSWORD_PROPERTIES = "db.password";
-
 
     private SqlHelper() {
     }
@@ -36,32 +34,21 @@ public class SqlHelper {
     }
 
     public static SqlStorage getSqlStorage() {
-        final String URL = Configurator.get().getProperty(SqlHelper.getUrl());
-        final String USER = Configurator.get().getProperty(SqlHelper.getUserName());
-        final String PASSWORD = Configurator.get().getProperty(SqlHelper.getPassword());
+        final String URL = SqlHelper.getUrl();
+        final String USER = SqlHelper.getUserName();
+        final String PASSWORD = SqlHelper.getPassword();
         return new SqlStorage(URL, USER, PASSWORD);
     }
 
-    private interface ExecuteQuery {
-        void execute(Connection connection) throws SQLException;
-    }
-
-    public void prepareStatementExecQuery(ExecuteQuery execute) {
-        try (Connection conn = ConnectionFactoryInitializer.getINSTANCE().getConnection()) {
-            execute.execute(conn);
+    public static void prepareStatementExecQuery(ConnectionFactory connectionFactory, String sql, SqlExecutorVoid execute) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            execute.execute(ps);
+        } catch (PSQLException e) {
+            throw new ExistStorageException(e.getMessage());
         } catch (SQLException e) {
             throw new StorageException(e);
-        }
-    }
-
-    private static class ConnectionFactoryInitializer {
-        volatile private static ConnectionFactory INSTANCE = () -> DriverManager.getConnection(getUrl(), getUserName(), getPassword());
-
-        private ConnectionFactoryInitializer() {
-        }
-
-        public static ConnectionFactory getINSTANCE() {
-            return INSTANCE;
         }
     }
 }
