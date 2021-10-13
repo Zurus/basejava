@@ -10,6 +10,10 @@ public class Configurator {
     private static final File PROPS = new File("config\\properties.properties");
     private static final Configurator INSTANCE = new Configurator();
 
+    private static final String URL_PROPERTIES = "db.url";
+    private static final String USER_PROPERTIES = "db.user";
+    private static final String PASSWORD_PROPERTIES = "db.password";
+
     private Properties properties = new Properties();
     private File storageDir;
 
@@ -30,7 +34,19 @@ public class Configurator {
         return storageDir;
     }
 
-    public String getProperty(String propertyName) {
+    public String getUrl() {
+        return getProperty(URL_PROPERTIES);
+    }
+
+    public String getUserName() {
+        return getProperty(USER_PROPERTIES);
+    }
+
+    public String getPassword() {
+        return getProperty(PASSWORD_PROPERTIES);
+    }
+
+    private String getProperty(String propertyName) {
         return properties.getProperty(propertyName);
     }
 }

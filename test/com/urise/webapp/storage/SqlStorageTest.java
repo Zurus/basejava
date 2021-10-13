@@ -5,10 +5,7 @@
 
 package com.urise.webapp.storage;
 
-import com.Configurator;
-import com.urise.webapp.util.SqlHelper;
-
-import static org.junit.Assert.*;
+import com.urise.webapp.sql.SqlHelper;
 
 public class SqlStorageTest extends AbstractStorageTest {
     public SqlStorageTest() {
