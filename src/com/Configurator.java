@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Configurator {
-    private static final File PROPS = new File("config\\properties.properties");
+    private static final File PROPS = new File(getHomeDir() + "properties.properties");
     private static final Configurator INSTANCE = new Configurator();
 
     private static final String URL_PROPERTIES = "db.url";
@@ -48,5 +48,14 @@ public class Configurator {
 
     private String getProperty(String propertyName) {
         return properties.getProperty(propertyName);
+    }
+
+    private static File getHomeDir() {
+        String homeDir = System.getProperty("homeDir");
+        File file = new File(homeDir == null ? "." : homeDir);
+        if (!file.isDirectory()) {
+            throw new IllegalStateException(homeDir + " is not directory");
+        }
+        return file;
     }
 }
