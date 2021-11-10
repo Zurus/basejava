@@ -8,9 +8,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.storage.serializer.ObjectSerializer;
 import org.junit.Test;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import static org.junit.Assert.*;
 
 public class PathStorageTest extends AbstractStorageTest{
